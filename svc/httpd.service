@@ -1,0 +1,15 @@
+[Unit]
+Description=The Golang HTTP server
+After=syslog.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+PIDFile=/run/httpd.pid
+ExecStart=/opt/httpd/httpd
+ExecReload=/opt/httpd/httpd -s reload
+ExecStop=/bin/kill -s QUIT $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
