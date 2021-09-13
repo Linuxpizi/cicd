@@ -55,15 +55,15 @@ func init() {
 	hystrix.SetLogger(log.Default())
 }
 
-func Limit(h http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		hystrix.Do("global", func() error {
-			fmt.Println("...")
-			h.ServeHTTP(w, r)
-			return nil
-		}, func(err error) error {
-			fmt.Println("... ", err)
-			return nil
-		})
-	})
-}
+// func Limit(h http.Handler) http.Handler {
+// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 		hystrix.Do("global", func() error {
+// 			fmt.Println("...")
+// 			h.ServeHTTP(w, r)
+// 			return nil
+// 		}, func(err error) error {
+// 			fmt.Println("... ", err)
+// 			return nil
+// 		})
+// 	})
+// }
