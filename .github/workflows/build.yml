@@ -27,9 +27,12 @@ jobs:
 
       - name: install dep
         uses: actions/setup-node@v2
+        with:
+          node-version: 16.5.0
 
-      - name: build & format
+      - name: install & build & format
         run: |
+          - node --version
           - npm install
           - npm run build
 
