@@ -29,7 +29,10 @@ jobs:
         with:
           node-version: 16.5.0
 
-      - run: node --version
+      - name: check node version
+        run: |
+          node --version
+          node node_modules/esbuild/install.js
 
       - name: install & build & format
         run: |
