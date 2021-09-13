@@ -12,10 +12,10 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   frontend:
-    # defaults:
-    #   run:
-    #     shell: bash
-    #     working-directory: ${{ github.workspace }}/web
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ github.workspace }}/web
 
     runs-on: ubuntu-latest
     steps:
