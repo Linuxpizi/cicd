@@ -22,17 +22,15 @@ jobs:
       # install frontend
       # build
       # deploy
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
       - name: install dep
         uses: actions/setup-node@v2
         with:
-          node-version: 16.5.0
+          node-version: 14.5.0
 
+      - uses: actions/checkout@v2
       - name: check node version
         run: |
           node --version
-          node node_modules/esbuild/install.js
 
       - name: install & build & format
         run: |
