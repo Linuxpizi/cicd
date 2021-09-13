@@ -27,6 +27,8 @@ jobs:
 
       - name: install dep
         uses: actions/setup-node@v2
+
+      - name: build & format
         run: |
           - npm install
           - npm run build
