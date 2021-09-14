@@ -37,6 +37,16 @@ jobs:
           npm install
           npm run build
 
+      - name: copy frontend dist
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.MASTER }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PWD }}
+          port: ${{ secrets.MASTER_PORT }}
+          source: ${{ github.workspace }}/web/dist
+          target: "test"
+
   backend:
     runs-on: ubuntu-latest
     steps:
@@ -94,31 +104,45 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
-  nginx:
-    runs-on: ubuntu-latest
-    steps:
-      # install nginx
-      # config and start nginx
-      - name: test
-        run: echo nginx
+  # nginx:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # install nginx
+  #     # config and start nginx
+  #     - name: test
+  #       run: echo nginx
 
-  notification:
-    steps:
-      - name: Send mail
-        if: always()
-        uses: dawidd6/action-send-mail@v2
-        with:
-          # mail server settings
-          server_address: smtp.gmail.com
-          server_port: 465
-          # user credentials
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          # email subject
-          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
-          # email body as text
-          body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
-          # comma-separated string, send email to
-          to: tangsong@npool.com
-          # from email name
-          from: npool
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: copy frontend dist
+  #     uses: appleboy/scp-action@master
+  #     with:
+  #       host: ${{ secrets.MASTER }}
+  #       username: ${{ secrets.USER }}
+  #       password: ${{ secrets.PWD }}
+  #       port: ${{ secrets.MASTER_PORT }}
+  #       source: ${{ github.workspace }}/web/dist
+  #       target: "test"
+
+  # notification:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Send mail
+  #       if: always()
+  #       uses: dawidd6/action-send-mail@v2
+  #       with:
+  #         # mail server settings
+  #         server_address: smtp.gmail.com
+  #         server_port: 25
+  #         # user credentials
+  #         username: ${{ secrets.EMAIL_USERNAME }}
+  #         password: ${{ secrets.EMAIL_PASSWORD }}
+  #         # email subject
+  #         subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+  #         # email body as text
+  #         body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+  #         # comma-separated string, send email to
+  #         to: tangsong@npool.com
+  #         # from email name
+  #         from: npool
