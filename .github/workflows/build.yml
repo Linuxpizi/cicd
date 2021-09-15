@@ -17,7 +17,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/web
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       # install frontend
       # build
@@ -49,7 +49,7 @@ jobs:
           target: "/opt/nginx/index"
 
   backend:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       # install backend
       # build
@@ -106,7 +106,7 @@ jobs:
           echo test, and deploy your project.
 
   # nginx:
-  #   runs-on: ubuntu-latest
+  #   runs-on: self-hosted
   #   steps:
   #     # install nginx
   #     # config and start nginx
@@ -114,7 +114,7 @@ jobs:
   #       run: echo nginx
 
   # deploy:
-  #   runs-on: ubuntu-latest
+  #   runs-on: self-hosted
   #   steps:
   #   - name: copy frontend dist
   #     uses: appleboy/scp-action@master
@@ -127,7 +127,7 @@ jobs:
   #       target: "test"
 
   # notification:
-  #   runs-on: ubuntu-latest
+  #   runs-on: self-hosted
   #   steps:
   #     - name: Send mail
   #       if: always()
