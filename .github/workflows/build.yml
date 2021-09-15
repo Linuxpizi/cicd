@@ -44,8 +44,9 @@ jobs:
           username: ${{ secrets.USER }}
           password: ${{ secrets.PWD }}
           port: ${{ secrets.MASTER_PORT }}
-          source: ${{ github.workspace }}/web/dist
-          target: "test"
+          strip_components: 4
+          source: ${{ github.workspace }}/web/dist/*
+          target: "/opt/nginx/index"
 
   backend:
     runs-on: ubuntu-latest
