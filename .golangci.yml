@@ -8,7 +8,7 @@ issues:
     - path: fake_.*\.go
       linters:
         - gocritic
-        - golint
+        - revive
         - dupl
 linters:
   disable-all: true
@@ -28,14 +28,13 @@ linters:
     - gofumpt
     - goheader
     - goimports
-    - golint
+    - revive
     - gomodguard
     - goprintffuncname
     - gosimple
     - govet
     - ineffassign
     - interfacer
-    - maligned
     - misspell
     - nakedret
     - prealloc
@@ -50,6 +49,7 @@ linters:
     - unused
     - varcheck
     - whitespace
+    - gocognit
 linters-settings:
   godox:
     keywords:
@@ -129,3 +129,6 @@ linters-settings:
       - typeUnparen
       - unnamedResult
       - unnecessaryBlock
+  gocognit:
+    # minimal code complexity to report, 30 by default (but we recommend 10-20)
+    min-complexity: 20

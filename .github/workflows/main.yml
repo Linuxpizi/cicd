@@ -110,15 +110,15 @@ jobs:
           port: ${{ secrets.MASTER_PORT }}
           strip_components: 2
           source: ${{ github.workspace }}/httpd*
-          target: "/opt/nginx"
+          target: "/opt/httpd"
 
-  nginx-by-need:
-    runs-on: self-hosted
-    steps:
+  # nginx-by-need:
+  #   runs-on: self-hosted
+  #   steps:
       # install nginx if nginx not exist
       # config and start nginx
-      - name: check nginx exist
-        run: |
+      # - name: check nginx exist
+      #   run: |
 
   # notification:
   #   runs-on: self-hosted
@@ -155,5 +155,4 @@ jobs:
     steps:
       - name: start service
         run: |
-          systemctl enable httpd
-          systemctl enable nginx
+          systemctl restart httpd

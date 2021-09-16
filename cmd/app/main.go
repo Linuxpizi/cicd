@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-
 	http.Handle("/", http.FileServer(http.Dir("/opt/nginx/index")))
 
 	http.HandleFunc("/ip", func(rw http.ResponseWriter, r *http.Request) {
