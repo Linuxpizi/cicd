@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import axios from 'axios'
-const ip = axios.get("http://106.74.7.3:8080/").then(resp=>resp.data).catch(err=>console.log(err))
+const ip = axios.get("http://106.74.7.3:8080/ip").then(resp=>resp.data).catch(err=>console.log(err))
 </script>
 
 <template>

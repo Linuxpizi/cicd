@@ -10,7 +10,10 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+
+	http.Handle("/", http.FileServer(http.Dir("/opt/nginx/index")))
+
+	http.HandleFunc("/ip", func(rw http.ResponseWriter, r *http.Request) {
 		if err := hystrix.Do("global", func() error {
 			addrs, err := net.InterfaceAddrs()
 			if err != nil {
