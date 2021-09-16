@@ -35,7 +35,7 @@ jobs:
       - name: install & build & format
         run: |
           npm install
-          npm run build
+          npm run build --if-present
 
       - name: copy frontend dist
         uses: appleboy/scp-action@master
@@ -49,6 +49,12 @@ jobs:
           target: "/opt/nginx/index"
 
   backend:
+    defaults:
+      run:
+        shell: bash
+    env:
+      GOPROXY: https://goproxy.io,direct
+      all_proxy: ${{ secrets.PROXY }}
     runs-on: self-hosted
     steps:
       # install backend
@@ -63,11 +69,11 @@ jobs:
         with:
           go-version: '1.17.0'
 
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v2
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v2.5.2
         with:
           # Optional: version of golangci-lint to use in form of v1.2 or v1.2.3 or `latest` to use the latest version
-          version: v1.29
+          version: v1.42.1
 
           # Optional: working directory, useful for monorepos
           # working-directory: somedir
@@ -87,23 +93,24 @@ jobs:
           # Optional: if set to true then the action don't cache or restore ~/.cache/go-build.
           # skip-build-cache: true
 
-      - name: run build
-        run: go build ${{ github.workspace }}/cmd/app
-
       - name: Build & Test
         run: |
           go build -v ./...
           go test -v ./...
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: run build
+        run: go build -o httpd ${{ github.workspace }}/cmd/app
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: copy backend dist
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.MASTER }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PWD }}
+          port: ${{ secrets.MASTER_PORT }}
+          # strip_components: 3
+          source: ${{ github.workspace }}/httpd*
+          target: "/opt/nginx"
 
   # nginx:
   #   runs-on: self-hosted
@@ -112,19 +119,6 @@ jobs:
   #     # config and start nginx
   #     - name: test
   #       run: echo nginx
-
-  # deploy:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - name: copy frontend dist
-  #     uses: appleboy/scp-action@master
-  #     with:
-  #       host: ${{ secrets.MASTER }}
-  #       username: ${{ secrets.USER }}
-  #       password: ${{ secrets.PWD }}
-  #       port: ${{ secrets.MASTER_PORT }}
-  #       source: ${{ github.workspace }}/web/dist
-  #       target: "test"
 
   # notification:
   #   runs-on: self-hosted
@@ -147,3 +141,16 @@ jobs:
   #         to: tangsong@npool.com
   #         # from email name
   #         from: npool
+  deploy:
+    needs: frontend
+    runs-on: self-hosted
+    steps:
+      - name: test dep
+        run: echo deploy
+
+  start_service:
+    needs: [frontend, backend, deploy]
+    runs-on: self-hosted
+    steps:
+      - name: start service
+        run: echo start
