@@ -108,17 +108,18 @@ jobs:
           username: ${{ secrets.USER }}
           password: ${{ secrets.PWD }}
           port: ${{ secrets.MASTER_PORT }}
-          # strip_components: 3
+          strip_components: 2
           source: ${{ github.workspace }}/httpd*
           target: "/opt/nginx"
 
-  # nginx:
-  #   runs-on: self-hosted
-  #   steps:
-  #     # install nginx
-  #     # config and start nginx
-  #     - name: test
-  #       run: echo nginx
+  nginx-by-need:
+    runs-on: self-hosted
+    steps:
+      # install nginx if nginx not exist
+      # config and start nginx
+      - name: check nginx exist
+        run: |
+
 
   # notification:
   #   runs-on: self-hosted
@@ -141,6 +142,7 @@ jobs:
   #         to: tangsong@npool.com
   #         # from email name
   #         from: npool
+
   deploy:
     needs: frontend
     runs-on: self-hosted
@@ -153,4 +155,6 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: start service
-        run: echo start
+        run: |
+          systemctl enable httpd
+          systemctl enable nginx
