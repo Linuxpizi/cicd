@@ -11,7 +11,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-		_ = hystrix.Do("global", func() error {
+		if err := hystrix.Do("global", func() error {
 			addrs, err := net.InterfaceAddrs()
 			if err != nil {
 				return err
@@ -32,7 +32,9 @@ func main() {
 			return nil
 		}, func(err error) error {
 			return nil
-		})
+		}); err != nil {
+			log.Fatal(err)
+		}
 	})
 	s := &http.Server{
 		Addr:    ":8080",

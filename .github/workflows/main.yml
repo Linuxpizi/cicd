@@ -120,7 +120,6 @@ jobs:
       - name: check nginx exist
         run: |
 
-
   # notification:
   #   runs-on: self-hosted
   #   steps:
