@@ -43,9 +43,7 @@ func main() {
 	log.Fatal(s.ListenAndServe())
 }
 
-var (
-	hystrixConfig *hystrix.CommandConfig
-)
+var hystrixConfig *hystrix.CommandConfig
 
 func init() {
 	hystrixConfig = &hystrix.CommandConfig{
